@@ -1,0 +1,408 @@
+/* Here theme and layout.
+   Ported faithfully from the design prototype: warm, soft, forgiving, like a
+   kind friend and a deep breath. Deliberately unlike a productivity app.
+   Bricolage Grotesque for display, Hanken Grotesk for body, coral accent.
+   Tailwind v4 is available via the import; the bespoke pieces below use CSS
+   variables so the look matches the prototype exactly. */
+@import 'tailwindcss';
+
+/* Expose the core tokens to Tailwind utilities too (v4 @theme). */
+@theme {
+  --color-bg: #fbeee1;
+  --color-surface: #fffaf3;
+  --color-accent: #e0795a;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-ui: 'Hanken Grotesk', system-ui, sans-serif;
+}
+
+:root {
+  --radius: 22px;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --ui: 'Hanken Grotesk', system-ui, sans-serif;
+  --accent: #e0795a;
+  --accent-deep: #b8512f;
+}
+
+/* Warm (default): soft peach, like a deep breath. */
+[data-theme='warm'] {
+  --bg: #fbeee1;
+  --bg-calm: #f8e6d6;
+  --surface: #fffaf3;
+  --surface-2: #f6e7d6;
+  --line: rgba(120, 72, 42, 0.12);
+  --text: #3a2c22;
+  --text-dim: #836b5b;
+  --text-faint: #b09a87;
+  --on-accent: #fffaf3;
+  --accent-soft: color-mix(in oklab, var(--accent) 16%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 30%, var(--line));
+  --shadow: 0 20px 56px -16px rgba(120, 64, 30, 0.32);
+  --shadow-sm: 0 8px 22px -10px rgba(120, 64, 30, 0.3);
+  color-scheme: light;
+}
+
+/* Warm dark (night): warm near-black browns, never cold grey. */
+[data-theme='dark'] {
+  --bg: #221a15;
+  --bg-calm: #1d1611;
+  --surface: #2b211b;
+  --surface-2: #362a22;
+  --line: rgba(255, 228, 205, 0.1);
+  --text: #f1e7da;
+  --text-dim: #b9a795;
+  --text-faint: #7c6e60;
+  --on-accent: #221a15;
+  --accent-soft: color-mix(in oklab, var(--accent) 20%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 34%, var(--line));
+  --shadow: 0 20px 56px -16px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 8px 22px -10px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* Visible keyboard focus ring for accessibility. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- Layout ------------------------------------------------------------- */
+.h-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+}
+.h-main {
+  flex: 1;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.h-col {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 30px 18px calc(116px + env(safe-area-inset-bottom));
+}
+.h-screen {
+  animation: hfade 0.42s ease both;
+}
+
+/* ---- Inputs and chips --------------------------------------------------- */
+.h-input {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 13px 15px;
+  font-size: 15px;
+  font-family: var(--ui);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.h-input::placeholder {
+  color: var(--text-faint);
+}
+.h-input:focus {
+  border-color: var(--accent-line);
+}
+
+.h-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: var(--ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.h-chip:hover {
+  border-color: var(--accent-line);
+  color: var(--text);
+}
+
+/* ---- Mobile bottom nav -------------------------------------------------- */
+.h-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-around;
+  padding: 9px 6px calc(9px + env(safe-area-inset-bottom));
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-top: 1px solid var(--line);
+}
+.h-tabbtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  color: var(--text-faint);
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: color 0.2s;
+}
+.h-tabbtn.is-on {
+  color: var(--accent-deep);
+}
+
+/* ---- Mobile top controls (children, settings) --------------------------- */
+.h-mobile-top {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: 14px;
+  z-index: 46;
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- Desktop rail ------------------------------------------------------- */
+.h-rail {
+  display: none;
+}
+@media (min-width: 760px) {
+  .h-rail {
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+    flex-shrink: 0;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid var(--line);
+    padding: 28px 18px;
+    background: color-mix(in oklab, var(--bg) 45%, var(--surface));
+  }
+  .h-bottom,
+  .h-mobile-top {
+    display: none;
+  }
+  .h-col {
+    padding: 48px 40px 64px;
+  }
+}
+.h-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 28px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.h-logo {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.h-logo-big {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.h-logo-small {
+  position: absolute;
+  right: 0;
+  top: 13px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-deep);
+}
+.h-rail-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.h-rail-foot {
+  margin-top: auto;
+  padding: 16px 10px 4px;
+  border-top: 1px solid var(--line);
+}
+.h-navitem {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 13px;
+  border-radius: 13px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: left;
+  width: 100%;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+.h-navitem:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.h-navitem.is-on {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+/* ---- Primitives --------------------------------------------------------- */
+.h-card {
+  transition:
+    border-color 0.2s ease,
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
+}
+.h-card.h-tap:hover {
+  border-color: var(--accent-line);
+}
+.h-iconbtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.h-iconbtn:hover {
+  color: var(--accent-deep);
+}
+.h-tap {
+  transition: transform 0.1s ease;
+}
+.h-tap:active {
+  transform: scale(0.95);
+}
+.h-btn {
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+.h-btn:hover:not(:disabled) {
+  filter: brightness(1.04);
+}
+
+@keyframes hfade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.h-fade {
+  animation: hfade 0.35s ease both;
+}
+.h-veil {
+  animation: hveil 0.35s ease both;
+}
+@keyframes hveil {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.h-sheet {
+  animation: hsheet 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes hsheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+.h-breathe {
+  animation: hbreathe 8s ease-in-out infinite;
+}
+@keyframes hbreathe {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.h-main::-webkit-scrollbar {
+  width: 10px;
+}
+.h-main::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+}
+
+/* Honor users who prefer reduced motion: the breathing orb settles. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
