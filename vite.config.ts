@@ -20,7 +20,8 @@ export default defineConfig({
         theme_color: '#fbeee1',
         background_color: '#fbeee1',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/here/',
+        scope: '/here/',
         icons: [
           {
             src: 'icon.svg',
