@@ -6,7 +6,7 @@ import { GuideScreen } from '@/features/guide/guide-screen';
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<TodayScreen />} />
