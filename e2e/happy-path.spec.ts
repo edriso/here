@@ -35,5 +35,6 @@ test('add a child and see them on Today', async ({ page }) => {
   await page.getByRole('button', { name: /Add Ada/ }).click();
   await page.keyboard.press('Escape');
 
-  await expect(page.getByText('Ada')).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Your children' })).toBeHidden();
+  await expect(page.getByRole('main').getByText('Ada', { exact: true })).toBeVisible();
 });

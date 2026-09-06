@@ -54,9 +54,9 @@ export function Sheet({ ariaLabel, onClose, children }: SheetProps) {
       }
     };
 
-    panel.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', onKeyDown);
     return () => {
-      panel.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keydown', onKeyDown);
       previouslyFocused?.focus?.();
     };
   }, [onClose]);
